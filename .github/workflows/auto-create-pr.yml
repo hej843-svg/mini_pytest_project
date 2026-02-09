@@ -1,0 +1,98 @@
+name: Auto PR & Merge (cherry-pick all commits, KST timestamp)
+
+on:
+  push:
+    branches:
+      - "*-working"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract base and working branches
+        id: extract
+        run: |
+          WORKING_BRANCH="${GITHUB_REF##refs/heads/}"
+          BASE_BRANCH="${WORKING_BRANCH%-working}"
+          echo "working_branch=$WORKING_BRANCH" >> $GITHUB_OUTPUT
+          echo "base_branch=$BASE_BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Set Git identity
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Create temp branch from base (KST timestamp)
+        id: temp_branch
+        run: |
+          TIMESTAMP=$(TZ='Asia/Seoul' date "+%Y%m%d%H%M%S")
+          TEMP_BRANCH_NAME="auto/temp-$TIMESTAMP"
+          echo "TEMP_BRANCH_NAME=$TEMP_BRANCH_NAME" >> $GITHUB_ENV
+          git fetch origin
+          git checkout -b "$TEMP_BRANCH_NAME" origin/${{ steps.extract.outputs.base_branch }}
+
+      - name: Cherry-pick all pushed commits
+        run: |
+          COMMITS=$(jq -r '.commits[].id' "$GITHUB_EVENT_PATH")
+          for COMMIT in $COMMITS; do
+            echo "Cherry-picking commit: $COMMIT"
+            git cherry-pick "$COMMIT" || exit 1
+          done
+
+      - name: Push temp branch
+        run: |
+          git push origin "$TEMP_BRANCH_NAME"
+
+      - name: Create PR via gh CLI
+        id: create_pr
+        run: |
+          COMMIT_LIST=$(jq -r '[.commits[].id] | join(", ")' "$GITHUB_EVENT_PATH")
+          gh pr create \
+            --head "$TEMP_BRANCH_NAME" \
+            --base ${{ steps.extract.outputs.base_branch }} \
+            --title "[PR] Auto from ${{ steps.extract.outputs.working_branch }}" \
+            --body "Cherry-picked from \`${{ steps.extract.outputs.working_branch }}\` (commits: $COMMIT_LIST)" \
+            --label "no-review" \
+            --fill \
+            --repo "${{ github.repository }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add PR Comment if base contains 'cxr'
+        if: contains(steps.extract.outputs.base_branch, 'cxr')
+        run: |
+          PR_NUMBER=$(gh pr view "$TEMP_BRANCH_NAME" --json number --jq '.number')
+          gh pr comment "$PR_NUMBER" --body "### 🧾 Description (Required)
+
+          ---
+          ### ✨ Changes (Optional)
+
+          ---
+          ### 📌 Checklist (Optional)
+
+          ---
+          ### 🧪 Test Log (Required)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge PR (squash)
+        run: |
+          PR_NUMBER=$(gh pr view "$TEMP_BRANCH_NAME" --json number --jq '.number')
+          echo "Merging PR: $PR_NUMBER"
+          gh pr merge "$PR_NUMBER" --squash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete temp branch
+        run: |
+          git push origin --delete "$TEMP_BRANCH_NAME"

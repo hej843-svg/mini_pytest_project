@@ -1,0 +1,71 @@
+{
+    "creation": {
+      "score" : false,
+      "report": false,
+      "normal_flagging_report": false,
+      "grayscale_jpg_map": false,
+      "grayscale_jpg_report": false,
+      "color_jpg_map": false,
+      "color_jpg_report": false,
+      "combined_jpg_map": false,
+      "combined_jpg_report": false,
+      "grayscale_json": false,
+      "color_json": false,
+      "combined_json": false,
+      "grayscale_jpg_additional": false
+    },
+    "creation_options": {
+      "thresholds": {
+        "atelectasis": 0.15,
+        "calcification": 0.15,
+        "cardiomegaly": 0.15,
+        "consolidation": 0.15,
+        "fibrosis": 0.15,
+        "fracture_acute": 0.15,
+        "mediastinal_widening": 0.15,
+        "nodule": 0.15,
+        "pleural_effusion": 0.15,
+        "pneumoperitoneum": 0.15,
+        "pneumothorax": 0.15,
+        "tuberculosis": 0.15,
+        "normal_flagging": 0.33
+      },
+      "frontal_xray": false,
+      "windowing": true,
+      "language": "en",
+      "show_license_warning": true,
+      "show_license_warning_detail": true,
+      "findings": {
+        "atelectasis": true,
+        "calcification": true,
+        "cardiomegaly": true,
+        "consolidation": true,
+        "fibrosis": true,
+        "fracture_acute": true,
+        "mediastinal_widening": true,
+        "nodule": true,
+        "pleural_effusion": true,
+        "pneumoperitoneum": true,
+        "pneumothorax": true
+      },
+      "tb_score": true,
+      "abnormality_score": true,
+      "mw_cm_score": true,
+      "show_low_score": true,
+      "merge_type": "partialMerge",
+      "report_score": true,
+      "report_note": true,
+      "raw": false,
+      "normal_flagging": {
+        "use": false,
+        "use_auto_scan": false,
+        "display_type": "small",
+        "title": "sample title",
+        "custom_report": "Normal chest X-ray. No acute cardiopulmonary abnormality."
+      }
+    },
+    "filtering":{
+      "use_age_filter": false,
+      "limit_patient_age": 4
+    }
+  }

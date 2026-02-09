@@ -1,0 +1,176 @@
+{
+    "version": "4.1.0",
+    "general": {
+        "language": "en",
+        "showLicenseWarning": false,
+        "showLicenseWarningDetail": false,
+        "inferenceServer": {
+            "url": "http://10.120.204.3:8203",
+            "apiKey": ""
+        },
+        "insightAeTitle": "LUNIT",
+        "taskDataRetention": true,
+        "taskDataRetentionDay": 1,
+        "unprocessedFileRetention": true,
+        "unprocessedFileRetentionHour": 1,
+        "processedFileRetention": true,
+        "processedFileRetentionHour": 1,
+        "storeOutputDelaySec": 0
+    },
+    "currentPriorComparison": {
+        "findScpAeTitle": "DVTK_QR_SCP",
+        "findScpHostName": "",
+        "findScpPort": 106,
+        "searchImagesTaken": 365,
+        "excludeImagesTaken": 60,
+        "moveScpHostName": "",
+        "moveScpPort": 106,
+        "moveScpAeTitle": "DVTK_QR_SCP",
+        "cmoveProtocolWaitSec": 3,
+        "filteringTag": [
+            {
+                "include": [],
+                "exclude": []
+            }
+        ],
+        "tagForQuery": [
+            {
+                "include": [],
+                "exclude": []
+            }
+        ]
+    },
+    "processingRule": [
+        {
+            "source": [
+                {
+                    "any": false,
+                    "aeTitle": "lunit",
+                    "ipAddress": "10.120.200.22",
+                    "useForwardDcm": false,
+                    "forward": {
+                        "aeTitle": "",
+                        "hostName": "",
+                        "port": 0,
+                        "params": ""
+                    }
+                }
+            ],
+            "filtering": {
+                "useAgeFilter": true,
+                "limitPatientAge": 4,
+                "frontalXray": false,
+                "ignoreDuplicateSop": false,
+                "filteringRules": [
+                    {
+                        "include": [],
+                        "exclude": []
+                    }
+                ]
+            },
+            "aiAnalysis": {
+                "normal_flagging": {
+                    "enabled": false,
+                    "useAutoScan": false,
+                    "threshold": 0.33
+                },
+                "findings": {
+                    "fracture_acute": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "atelectasis": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "calcification": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "cardiomegaly": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "consolidation": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "fibrosis": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "mediastinalWidening": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "nodule": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "pneumothorax": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "pleuralEffusion": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "pneumoperitoneum": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    },
+                    "tuberculosis": {
+                        "enabled": true,
+                        "threshold": 0.15
+                    }
+                },
+                "windowing": true
+            },
+            "destinations": [
+                {
+                    "aeTitle": "destination_aet",
+                    "protocol": "dicom",
+                    "hostName": "10.212.130.13",
+                    "port": 10004,
+                    "params": "",
+                    "scUseCompression": false,
+                    "creation": {
+                        "createSc": false,
+                        "createGsps": false,
+                        "createNfBasicTextSr": false,
+                        "createCaBasicTextSr": false,
+                        "createHl7": false,
+                        "mergeType": "partialMerge",
+                        "showLowScore": true,
+                        "mwCmScore": true,
+                        "abnormalityScore": true,
+                        "normalFlagging": {
+                            "title": "Report",
+                            "report": "FINDINGS:\nLines and tubes:[None present]\nLungs and pleural space: [No focal consolidation, pleural effusion or pneumothorax.]\nCardiac silhouette, hilar regions, and trachea: [Normal.]\nThoracic osseous structures :[Normal.]\nOverlying soft tissues: [Normal.]\nUpper abdomen: [Normal.]\nIMPRESSION:\nNormal chest radiograph."
+                          },
+                        "dicomSC": {
+                            "displayMode": "grayscale",
+                            "resultMap": false,
+                            "resultReport": false,
+                            "normalFlaggingDisplayType": "small",
+                            "studyDescription": null,
+                            "seriesDescription": null,
+                            "createNewSeries": true,
+                            "newSeriesNumber": 99999999,
+                            "instanceNumber": 999999
+                        },
+                        "gsps": {
+                            "invertSoftcopyLut": false,
+                            "separateFindingsInfo": false,
+                            "newSeriesNumber": 1
+                        },
+                        "sr": {
+                            "newSeriesNumber": 1
+                        },
+                        "useComparison": false
+                    }
+                }
+            ]
+        }
+    ]
+}

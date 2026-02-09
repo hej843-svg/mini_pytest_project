@@ -1,0 +1,71 @@
+{
+    "creation": {
+        "sc_report": false,
+        "sc_map": false,
+        "gsps": false,
+        "basic_text_sr": false,
+        "normal_flagging_sr": false, 
+        "hl7": false
+    },
+    "creation_options": {
+        "thresholds": {
+            "atelectasis": 0.15,
+            "calcification": 0.15,
+            "cardiomegaly": 0.15,
+            "consolidation": 0.15,
+            "fibrosis": 0.15,
+            "mediastinal_widening": 0.15,
+            "nodule": 0.15,
+            "pleural_effusion": 0.15,
+            "pneumoperitoneum": 0.15,
+            "pneumothorax": 0.15,
+            "tuberculosis": 0.15,
+            "fracture_acute": 0.15,
+            "normal_flagging": 0.33
+        },
+        "frontal_xray": false,
+        "windowing": true,
+        "language": "en",
+        "show_license_warning": false,
+        "show_license_warning_detail": false,
+        "findings": {
+            "atelectasis": true,
+            "calcification": true,
+            "cardiomegaly": true,
+            "consolidation": true,
+            "fibrosis": true,
+            "mediastinal_widening": true,
+            "nodule": true,
+            "pleural_effusion": true,
+            "pneumoperitoneum": true,
+            "pneumothorax": true,
+            "fracture_acute": true
+        },
+        "tb_score": true,
+        "abnormality_score": true,
+        "mw_cm_score": true,
+        "show_low_score": false,
+        "merge_type": "partialMerge",
+        "display_mode": "grayscale",
+        "sc_instance_number": 999999,
+        "sc_study_description": null,
+        "sc_series_description": null,
+        "sc_create_new_series": true,
+        "sc_new_series_number": 99999999,
+        "invert_softcopy_lut": false,
+        "gsps_new_series_number": 1,
+        "separate_findings_info": false,
+        "basic_text_sr_series_number": 1,
+        "normal_flagging" : {
+            "use": false,
+            "use_auto_scan": false,
+            "display_type": "small",
+            "title": "sample title",
+            "custom_report": "Normal chest X-ray. No acute cardiopulmonary abnormality."
+        }
+    },
+    "filtering":{
+        "use_age_filter": false,
+        "limit_patient_age": 4
+    }
+}
